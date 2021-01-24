@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 source ~/Build-Env-Setup-Scripts/setup/hub.sh
 printf '\n' | tee -a ~/.bashrc
