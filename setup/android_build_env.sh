@@ -7,11 +7,15 @@
 # Script to setup an AOSP Build environment on Ubuntu and Linux Mint
 
 LATEST_MAKE_VERSION="4.3"
-UBUNTU_14_PACKAGES="binutils-static curl figlet libesd0-dev libwxgtk2.8-dev schedtool"
 UBUNTU_16_PACKAGES="libesd0-dev"
 UBUNTU_18_PACKAGES="curl"
-UBUNTU_20_PACKAGES="python"
+UBUNTU_20_PACKAGES="libncurses5 curl python-is-python3"
+DEBIAN_10_PACKAGES="libncurses5"
 PACKAGES=""
+
+echo "Adding GitHub apt key and repository!"
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+sudo apt-add-repository https://cli.github.com/packages
 
 sudo apt update
 
@@ -20,14 +24,14 @@ sudo apt install lsb-core -y
 
 LSB_RELEASE="$(lsb_release -d | cut -d ':' -f 2 | sed -e 's/^[[:space:]]*//')"
 
-if [[ ${LSB_RELEASE} =~ "Ubuntu 14" ]]; then
-    PACKAGES="${UBUNTU_14_PACKAGES}"
-elif [[ ${LSB_RELEASE} =~ "Mint 18" || ${LSB_RELEASE} =~ "Ubuntu 16" ]]; then
+if [[ ${LSB_RELEASE} =~ "Mint 18" || ${LSB_RELEASE} =~ "Ubuntu 16" ]]; then
     PACKAGES="${UBUNTU_16_PACKAGES}"
 elif [[ ${LSB_RELEASE} =~ "Ubuntu 18" || ${LSB_RELEASE} =~ "Ubuntu 19" || ${LSB_RELEASE} =~ "Deepin" ]]; then
     PACKAGES="${UBUNTU_18_PACKAGES}"
 elif [[ ${LSB_RELEASE} =~ "Ubuntu 20" ]]; then
     PACKAGES="${UBUNTU_20_PACKAGES}"
+elif [[ ${LSB_RELEASE} =~ "Debian GNU/Linux 10" ]]; then
+    PACKAGES="${DEBIAN_10_PACKAGES}"
 fi
 
 sudo DEBIAN_FRONTEND=noninteractive \
@@ -41,8 +45,8 @@ sudo DEBIAN_FRONTEND=noninteractive \
     maven ncftp ncurses-dev patch patchelf pkg-config pngcrush \
     pngquant python2.7 python-all-dev re2c schedtool squashfs-tools subversion \
     texinfo unzip w3m xsltproc zip zlib1g-dev lzip \
-    libxml-simple-perl apt-utils \
-    "${PACKAGES}" -y
+    libxml-simple-perl apt-utils gh \
+    ${PACKAGES} -y
 
 # For all those distro hoppers, lets setup your git credentials
 GIT_USERNAME="$(git config --get user.name)"
@@ -69,15 +73,11 @@ if [[ ${LSB_RELEASE} =~ "Ubuntu 18.10" || ${LSB_RELEASE} =~ "Ubuntu 19" || ${LSB
     fi
 fi
 
-if [[ "$(command -v adb)" != "" ]]; then
-    echo -e "Setting up udev rules for adb!"
-    sudo curl --create-dirs -L -o /etc/udev/rules.d/51-android.rules -O -L https://raw.githubusercontent.com/M0Rf30/android-udev-rules/master/51-android.rules
-    sudo chmod 644 /etc/udev/rules.d/51-android.rules
-    sudo chown root /etc/udev/rules.d/51-android.rules
-    sudo systemctl restart udev
-    adb kill-server
-    sudo killall adb
-fi
+echo -e "Setting up udev rules for adb!"
+sudo curl --create-dirs -L -o /etc/udev/rules.d/51-android.rules -O -L https://raw.githubusercontent.com/M0Rf30/android-udev-rules/master/51-android.rules
+sudo chmod 644 /etc/udev/rules.d/51-android.rules
+sudo chown root /etc/udev/rules.d/51-android.rules
+sudo systemctl restart udev
 
 if [[ "$(command -v make)" ]]; then
     makeversion="$(make -v | head -1 | awk '{print $3}')"
