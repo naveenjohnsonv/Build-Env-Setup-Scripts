@@ -13,14 +13,6 @@ Distributions Using The `apt` Package Manager
 4- Profit!!
 ```
 
-## Setup Rom Kitchen & DTG(Included In Full Version) ##
-```
-1- Download DTG-RomKitchenSetup.sh From Releases Section
-2- Check Permissions and make Executable
-3- Run The Downloaded DTG-RomKitchenSetup.sh From Desktop or Terminal
-4- Profit!!
-```
-
 ## Options Included- Full Version ##
 ```
 Sets Up Basic Directory Structure
@@ -29,15 +21,9 @@ Installs Aria2
 Installs Cpio
 Installs ADB/Fastboot
 Installs Python 2.7
-Installs Python 3.8
-Installs Java 7
+Installs Python 3
 Installs Java 8
-Dekstop Python & Java Version Changer Launchers
-TWRP Device Tree Generator(DTG) for Building Recoveries
-Dekstop Launcher for DTG
-SuperR Rom Kitchen for Building Custom Stock Roms
-Desktop Launcher for SuperR Rom Kitchen
-WIP..
+Dekstop Python Version Changer Launchers
 ```
 
 ### Brief Explanation of Stuff in Here ##

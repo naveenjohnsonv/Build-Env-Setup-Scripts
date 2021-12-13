@@ -3,9 +3,11 @@
 cd /tmp || exit 1
 git clone git://github.com/ccache/ccache.git
 cd ccache || exit 1
-./autogen.sh
-./configure --disable-man --with-libzstd-from-internet --with-libb2-from-internet
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DZSTD_FROM_INTERNET=ON ..
 make -j"$(nproc)"
 sudo make install
+cd ..
 rm -rf "${PWD}"
 cd - || exit 1
