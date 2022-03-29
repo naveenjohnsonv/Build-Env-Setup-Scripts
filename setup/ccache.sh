@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd /tmp || exit 1
-git clone git://github.com/ccache/ccache.git
+git clone https://github.com/ccache/ccache.git
 cd ccache || exit 1
 mkdir build
 cd build
